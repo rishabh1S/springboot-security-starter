@@ -20,4 +20,8 @@ public interface UserService {
 
     public List<User> getUserByRole(String userRole);
 
+    public String createPasswordResetToken(String email);
+
+    public User validatePasswordResetToken(String token);
+
 }

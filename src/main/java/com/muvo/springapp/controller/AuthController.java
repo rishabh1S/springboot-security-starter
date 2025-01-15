@@ -8,13 +8,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.muvo.springapp.configuration.JwtUtils;
 import com.muvo.springapp.model.LoginDTO;
+import com.muvo.springapp.model.PasswordResetDTO;
 import com.muvo.springapp.model.User;
 import com.muvo.springapp.service.UserService;
 
@@ -29,6 +32,9 @@ public class AuthController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
@@ -69,4 +75,27 @@ public class AuthController {
             return ResponseEntity.status(500).body("Error logging in: " + e.getMessage());
         }
     }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestParam String email) {
+        try {
+            userService.createPasswordResetToken(email);
+            return ResponseEntity.ok("Password reset link sent to email.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody PasswordResetDTO resetRequest) {
+        try {
+            User user = userService.validatePasswordResetToken(resetRequest.getToken());
+            user.setPassword(passwordEncoder.encode(resetRequest.getNewPassword()));
+            userService.updateUser(user.getUserId(), user);
+            return ResponseEntity.ok("Password reset successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Error: " + e.getMessage());
+        }
+    }
+
 }
