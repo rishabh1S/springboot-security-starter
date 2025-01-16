@@ -21,12 +21,14 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         logger.debug("Entering in loadUserByUsername method.....");
-        User user = userRepo.findByEmail(email).orElse(null);
-        if (user == null) {
-            logger.error("Email not Found: " + email);
-            throw new UsernameNotFoundException("Invalid Email");
-        }
+        User user = userRepo.findByEmail(email).orElseThrow(() -> {
+            logger.error("Email not found: " + email);
+            return new UsernameNotFoundException("Invalid Email");
+        });
         logger.info("User Authenticated successfully...!!!!!");
-        return new CustomUserDetails(user);
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getEmail())
+                .password(user.getPassword())
+                .build();
     }
 }

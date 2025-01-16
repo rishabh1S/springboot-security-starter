@@ -61,7 +61,6 @@ public class UserServiceImpl implements UserService {
             User user = getUser.get();
             user.setEmail(userDetails.getEmail());
             user.setPassword(userDetails.getPassword());
-            user.setUserRole(userDetails.getUserRole());
             return userRepo.save(user);
         }
         return null;
@@ -72,11 +71,6 @@ public class UserServiceImpl implements UserService {
         if (userRepo.existsById(userId)) {
             userRepo.deleteById(userId);
         }
-    }
-
-    @Override
-    public List<User> getUserByRole(String userRole) {
-        return userRepo.findByUserRole(userRole).orElse(List.of());
     }
 
     @Override

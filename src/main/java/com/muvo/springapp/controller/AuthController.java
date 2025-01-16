@@ -60,8 +60,7 @@ public class AuthController {
                 LoginDTO userDTO = new LoginDTO();
                 userDTO.setUserId(myUser.getUserId());
                 userDTO.setEmail(myUser.getEmail());
-                userDTO.setUserRole(myUser.getUserRole());
-                userDTO.setToken(jwtService.GenerateToken(myUser.getEmail()));
+                userDTO.setToken(jwtService.generateToken(myUser.getEmail()));
 
                 return ResponseEntity.status(200).body(userDTO);
             } else {

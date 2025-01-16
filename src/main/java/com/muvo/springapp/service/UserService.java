@@ -18,8 +18,6 @@ public interface UserService {
 
     public void deleteUser(int userId);
 
-    public List<User> getUserByRole(String userRole);
-
     public String createPasswordResetToken(String email);
 
     public User validatePasswordResetToken(String token);
