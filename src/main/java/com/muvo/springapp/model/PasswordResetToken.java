@@ -9,15 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 public class PasswordResetToken {
     @Id
@@ -33,4 +25,47 @@ public class PasswordResetToken {
 
     @Column(nullable = false)
     private LocalDateTime expirationTime;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public LocalDateTime getExpirationTime() {
+        return expirationTime;
+    }
+
+    public void setExpirationTime(LocalDateTime expirationTime) {
+        this.expirationTime = expirationTime;
+    }
+
+    public PasswordResetToken() {
+    }
+
+    public PasswordResetToken(Long id, String token, User user, LocalDateTime expirationTime) {
+        this.id = id;
+        this.token = token;
+        this.user = user;
+        this.expirationTime = expirationTime;
+    }
+
 }

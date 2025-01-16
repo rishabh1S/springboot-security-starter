@@ -1,10 +1,10 @@
-package com.muvo.demo;
+package com.muvo.springapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DemoApplicationTests {
+class SpringappApplicationTests {
 
 	@Test
 	void contextLoads() {
