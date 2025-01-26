@@ -17,7 +17,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtUtils {
 
     @Value("${JWT_SECRET}")
-    public static String SECRET;
+    public String SECRET;
 
     public Boolean validateToken(String token, String username) {
         final String extractedUsername = extractUsername(token);

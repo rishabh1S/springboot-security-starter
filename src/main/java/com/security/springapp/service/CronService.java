@@ -11,13 +11,14 @@ public class CronService {
     RestTemplate restTemplate;
 
     @Value("${BACKEND_URL}")
-    public static String BASE_URL;
+    public String BASE_URL;
 
     @Scheduled(fixedRate = 890000)
     public void pingSelf() {
         try {
             String url = BASE_URL + "/api/health";
-            restTemplate.getForObject(url, String.class);
+            String response = restTemplate.getForObject(url, String.class);
+            System.out.println("Ping successful: " + response);
         } catch (RestClientException e) {
             System.out.println("Failed to ping: " + e.getMessage());
         }
