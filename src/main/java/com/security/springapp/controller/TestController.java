@@ -18,8 +18,8 @@ public class TestController {
     @Autowired
     private EmailService emailService;
 
-    @GetMapping("/test")
-    public String test() {
+    @GetMapping("/health")
+    public String healthCheck() {
         return "The app is running successfully.";
     }
 

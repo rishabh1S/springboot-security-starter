@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/register", "/api/login", "/api/forgot-password", "/api/reset-password",
-                                "/api/test-email", "/api/test")
+                                "/api/test-email", "/api/health")
                         .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
