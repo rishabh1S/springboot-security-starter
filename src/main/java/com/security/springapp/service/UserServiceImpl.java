@@ -26,8 +26,8 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
     @Autowired
     private EmailService emailService;
-    @Value("${BACKEND_URL}")
-    private String backendUrl;
+    @Value("${FRONTEND_URL}")
+    private String frontendUrl;
 
     @Override
     public List<User> getAllUsers() {
@@ -84,8 +84,7 @@ public class UserServiceImpl implements UserService {
         resetToken.setExpirationTime(LocalDateTime.now().plusMinutes(30));
         tokenRepo.save(resetToken);
 
-        // Send the token to the user's email
-        String resetLink = backendUrl + "/api/reset-password?token=" + token;
+        String resetLink = frontendUrl + "/api/reset-password?token=" + token;
         emailService.sendEmail(user.getEmail(), "Password Reset Request",
                 "Click the link to reset your password: " + resetLink);
         return token;
@@ -94,7 +93,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User validatePasswordResetToken(String token) {
         PasswordResetToken resetToken = tokenRepo.findByToken(token)
-                .orElseThrow(() -> new RuntimeException("Invalid or expired token"));
+                .orElseThrow(() -> new RuntimeException("Invalid token"));
 
         if (resetToken.getExpirationTime().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Token has expired");
